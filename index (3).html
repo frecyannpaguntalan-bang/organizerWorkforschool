@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>School Work Organizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        .task-done {
+            text-decoration: line-through;
+            color: #9CA3AF;
+            opacity: 0.75;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- LOGIN PAGE -->
+        <section id="loginPage" class="bg-white rounded-xl shadow-lg p-8 max-w-md mx-auto mt-12">
+            <div class="text-center mb-6">
+                <i class="fa fa-book text-indigo-600 text-5xl mb-4"></i>
+                <h2 class="text-2xl font-bold text-gray-800">School Work Organizer</h2>
+                <p class="text-gray-600 mt-1">Sign in to access your tasks</p>
+            </div>
+
+            <div id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="loginUser" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="e.g. frecyann">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPass" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Minimum 4 characters">
+                </div>
+                <button onclick="doLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium">
+                    Sign In
+                </button>
+                <p class="text-center mt-4 text-sm text-gray-600">
+                    No account? <a href="#" onclick="showRegister()" class="text-indigo-600 font-medium">Register here</a>
+                </p>
+            </div>
+
+            <div id="registerForm" class="hidden">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Create Username</label>
+                    <input type="text" id="regUser" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="e.g. frecyann">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Create Password</label>
+                    <input type="password" id="regPass" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Minimum 4 characters">
+                </div>
+                <button onclick="doRegister()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium">
+                    Create Account
+                </button>
+                <p class="text-center mt-4 text-sm text-gray-600">
+                    Have account? <a href="#" onclick="showLogin()" class="text-indigo-600 font-medium">Sign in</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- MAIN APP -->
+        <div id="appPage" class="hidden">
+            <header class="bg-indigo-600 text-white rounded-xl shadow-lg p-6 mb-8 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold flex items-center gap-3">
+                        <i class="fa fa-book"></i> School Work Organizer
+                    </h1>
+                    <p class="text-indigo-100 mt-1">Track assignments, reminders & notes</p>
+                </div>
+                <button onclick="logout()" class="bg-white text-indigo-600 px-4 py-2 rounded-lg hover:bg-gray-100">
+                    <i class="fa fa-sign-out mr-1"></i> Logout
+                </button>
+            </header>
+
+            <!-- ADD TASK FORM -->
+            <section class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="fa fa-plus-circle text-indigo-600"></i> Add New Task
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                        <select id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            <option value="assignment">📝 Assignment</option>
+                            <option value="reminder">⏰ Reminder</option>
+                            <option value="study">⏳ Study</option>
+                            <option value="note">📌 Note</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                        <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="e.g. Math">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                    <input type="text" id="title" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="e.g. Chapter 3 Essay" required>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
+                        <input type="date" id="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                        <input type="text" id="time" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="e.g. 3:00 PM">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Details</label>
+                    <textarea id="notes" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="Extra info..."></textarea>
+                </div>
+
+                <button onclick="addTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg">
+                    Save Task
+                </button>
+            </section>
+
+            <!-- TASK LIST -->
+            <section class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="fa fa-list-alt text-indigo-600"></i> My Tasks
+                </h2>
+                <div id="taskList" class="space-y-4"></div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = localStorage.getItem('activeUser');
+        let tasks = [];
+
+        if (currentUser) showApp();
+
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+        }
+
+        function doRegister() {
+            const user = document.getElementById('regUser').value.trim().toLowerCase();
+            const pass = document.getElementById('regPass').value.trim();
+
+            if (user.length < 3) return alert('Username at least 3 characters');
+            if (pass.length < 4) return alert('Password at least 4 characters');
+
+            if (localStorage.getItem('user_' + user)) {
+                return alert('Username already exists!');
+            }
+
+            localStorage.setItem('user_' + user, pass);
+            alert('Account created! You can sign in now.');
+            showLogin();
+        }
+
+        function doLogin() {
+            const user = document.getElementById('loginUser').value.trim().toLowerCase();
+            const pass = document.getElementById('loginPass').value.trim();
+            const savedPass = localStorage.getItem('user_' + user);
+
+            if (!savedPass || savedPass !== pass) {
+                return alert('Wrong username or password!');
+            }
+
+            currentUser = user;
+            localStorage.setItem('activeUser', user);
+            showApp();
+        }
+
+        function logout() {
+            localStorage.removeItem('activeUser');
+            currentUser = null;
+            document.getElementById('appPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
+
+        function showApp() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('appPage').classList.remove('hidden');
+            tasks = JSON.parse(localStorage.getItem('tasks_' + currentUser)) || [];
+            renderTasks();
+        }
+
+        const typeColors = {
+            assignment: 'bg-red-100 text-red-800', 
+            reminder: 'bg-blue-100 text-blue-800', 
+            study: 'bg-green-100 text-green-800', 
+            note: 'bg-yellow-100 text-yellow-800'
+        };
+
+        function addTask() {
+            const task = {
+                type: document.getElementById('type').value, 
+                subject: document.getElementById('subject').value.trim() || 'General', 
+                title: document.getElementById('title').value.trim(), 
+                date: document.getElementById('date').value || '', 
+                time: document.getElementById('time').value.trim() || '', 
+                notes: document.getElementById('notes').value.trim() || '', 
+                done: false
+            };
+
+            if (!task.title) return alert('Please enter a title!');
+
+            tasks.push(task);
+            saveAndRender();
+            
+            // Clear form
+            document.getElementById('subject').value = '';
+            document.getElementById('title').value = '';
+            document.getElementById('date').value = '';
+            document.getElementById('time').value = '';
+            document.getElementById('notes').value = '';
+        }
+
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+
+            tasks.forEach((task, i) => {
+                const card = document.createElement('div');
+                card.className = `border rounded-lg p-4 ${task.done ? 'task-done' : ''}`;
+                card.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <input type="checkbox" ${task.done ? 'checked' : ''} onchange="toggleDone(${i})" class="mt-1">
+                        <div class="flex-1">
+                            <span class="px-2 py-0.5 rounded text-xs font-medium ${typeColors[task.type]}">
+                                ${task.type.charAt(0).toUpperCase() + task.type.slice(1)}
+                            </span>
+                            <span class="text-sm text-gray-600 ml-2">${task.subject}</span>
+                            <span class="text-sm text-gray-500 float-right">${task.date || ''} ${task.time ? ' | ' + task.time : ''}</span>
+                            <h4 class="font-medium mt-1">${task.title}</h4>
+                            <p class="text-sm text-gray-600">${task.notes}</p>
+                        </div>
+                        <button onclick="deleteTask(${i})" class="text-red-500">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function toggleDone(i) {
+            tasks[i].done = !tasks[i].done;
+            saveAndRender();
+        }
+
+        function deleteTask(i) {
+            if (confirm('Delete this task?')) {
+                tasks.splice(i, 1);
+                saveAndRender();
+            }
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('tasks_' + currentUser, JSON.stringify(tasks));
+            renderTasks();
+        }
+    </script>
+</body>
+</html>
